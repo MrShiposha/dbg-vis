@@ -10,38 +10,51 @@ use graph::*;
 
 #[macro_export]
 macro_rules! dbg_vis {
-    ($point_name:ident: $watch:expr) => {
-
-        let _dbg_vis;
+    (let $dbg_watch:ident: { $($watch_point:ident),+ }) => {
+        #[allow(unused)]
+        #[allow(unused_mut)]
+        let mut $dbg_watch;
 
         #[cfg(debug_assertions)]
         {
-            _dbg_vis = {
-                use ::dbg_vis::DebugVis;
+            $dbg_watch = {
+                use $crate::DebugVis;
 
                 #[allow(non_camel_case_types)]
+                #[derive(Default)]
                 pub struct ___DBG_VIS_STRUCT___ {
                     #[allow(unused)]
-                    $point_name: $crate::JSON
+                    $(
+                        $watch_point: $crate::JSON
+                    ),+
                 }
 
-                ___DBG_VIS_STRUCT___ {
-                    $point_name: $crate::serde_json::to_string(
-                        &$crate::raw_dbg_json(($watch).debug_visualize())
-                    ).unwrap()
-                }
+                ___DBG_VIS_STRUCT___::default()
             };
         }
 
         #[cfg(not(debug_assertions))]
         {
-            _dbg_vis = {
+            $dbg_watch = {
                 #[allow(non_camel_case_types)]
                 pub struct ___DBG_VIS_STRUCT___;
 
                 ___DBG_VIS_STRUCT___
             };
         }
+    };
+
+    ($dbg_watch:ident.$watch_point:ident = $value:expr) => {
+        #[cfg(debug_assertions)]
+        {
+            $dbg_watch.$watch_point = $crate::serde_json::to_string(
+                &$crate::raw_dbg_json(($value).debug_visualize())
+            ).unwrap();
+        }
+    };
+
+    ($dbg_watch:ident.$watch_point:ident) => {
+        dbg_vis![$dbg_watch.$watch_point = $watch_point];
     };
 }
 
