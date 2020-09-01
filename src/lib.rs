@@ -17,6 +17,8 @@ macro_rules! dbg_vis {
         #[cfg(debug_assertions)]
         {
             _dbg_vis = {
+                use ::dbg_vis::DebugVis;
+
                 #[allow(non_camel_case_types)]
                 pub struct ___DBG_VIS_STRUCT___ {
                     #[allow(unused)]
