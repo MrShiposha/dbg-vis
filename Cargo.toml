@@ -1,0 +1,14 @@
+[package]
+name = "dbg-vis"
+version = "0.1.0"
+authors = ["Daniel Shiposha <mrshiposha@gmail.com>"]
+edition = "2018"
+
+[features]
+with_petgraph = ["petgraph"]
+
+[dependencies]
+serde = { version = "*", features=["derive"] }
+serde_json = "*"
+
+petgraph = { version = "*", optional=true }
