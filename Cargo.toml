@@ -5,7 +5,9 @@ authors = ["Daniel Shiposha <mrshiposha@gmail.com>"]
 edition = "2018"
 
 [features]
-with_petgraph = ["petgraph"]
+default = ["dbg-vis-macro"]
+dbg-vis-macro = []
+with-petgraph = ["petgraph"]
 
 [dependencies]
 serde = { version = "*", features=["derive"] }

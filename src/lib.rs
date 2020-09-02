@@ -3,12 +3,13 @@ pub extern crate serde_json;
 
 mod graph;
 
-#[cfg(feature = "with_petgraph")]
+#[cfg(feature = "with-petgraph")]
 mod petgraph;
 
 use graph::*;
 
 #[macro_export]
+#[cfg(feature = "dbg-vis-macro")]
 macro_rules! dbg_vis {
     (let $dbg_watch:ident: { $($watch_point:ident),+ }) => {
         #[allow(unused)]
@@ -56,6 +57,12 @@ macro_rules! dbg_vis {
     ($dbg_watch:ident.$watch_point:ident) => {
         dbg_vis![$dbg_watch.$watch_point = $watch_point];
     };
+}
+
+#[macro_export]
+#[cfg(not(feature = "dbg-vis-macro"))]
+macro_rules! dbg_vis {
+    ($($tt:tt)*) => {}
 }
 
 pub type JSON = String;
